@@ -1,0 +1,22 @@
+version: '3.1'
+services:
+    web:
+        image: chrch/docker-pets:1.0
+        deploy:
+            replicas: 3
+        ports:
+            - 5000
+        healthcheck:
+            interval: 10s
+            timeout: 2s
+            retries: 3
+
+    visualizer:
+        image: dockersamples/visualizer
+        ports:
+            - 8080
+        deploy:
+            placement:
+                constraints: [node.role == manager]
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
